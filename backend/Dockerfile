@@ -1,6 +1,9 @@
 # Imagem base PHP-FPM
 FROM php:8.2-fpm
 
+# Instale as dependências do sistema e a extensão pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql
+
 # Define diretório de trabalho
 WORKDIR /var/www
 
