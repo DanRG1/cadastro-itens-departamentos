@@ -24,7 +24,9 @@ services:
 
   # Serviço do PHP-FPM
   php-fpm:
-    image: php:8.2-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: php-fpm
     restart: unless-stopped
     working_dir: /var/www/

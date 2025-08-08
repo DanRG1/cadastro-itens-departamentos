@@ -1,9 +1,6 @@
 # Imagem base PHP-FPM
 FROM php:8.2-fpm
 
-# Instale as dependências do sistema e a extensão pdo_mysql
-RUN docker-php-ext-install pdo pdo_mysql
-
 # Define diretório de trabalho
 WORKDIR /var/www
 
@@ -20,7 +17,6 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip bcmath opcache \
     && rm -rf /var/lib/apt/lists/*
-
 # Instala o Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
