@@ -1,5 +1,3 @@
-
-
 services:
   # Serviço da Aplicação Laravel
   app:
@@ -24,6 +22,17 @@ services:
       db:
         condition: service_healthy
 
+  # Serviço do PHP-FPM
+  php-fpm:
+    image: php:8.2-fpm
+    container_name: php-fpm
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel
+
   # Serviço do Nginx
   nginx:
     image: nginx:alpine
@@ -38,6 +47,7 @@ services:
       - laravel
     depends_on:
       - app
+      - php-fpm
 
   # Serviço do Banco de Dados MariaDB
   db:
@@ -54,7 +64,17 @@ services:
     ports:
       - "3307:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-plaravel"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-plaravel",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
